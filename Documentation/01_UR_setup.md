@@ -14,4 +14,8 @@ The official Universal Robots package and driver will be properly installed
 To work only in virtual environment for simulation purposes, follow instructions in:
 - https://github.com/ros-industrial/universal_robot
 
+> Use the "melodic-devel" branch to clone "universal_robot" package in your workspace
+>
+> Delete the ".git" and ".github" of "universal_robot" package to sync it within your repository.
+
 You are now ready to work with the workspace!
