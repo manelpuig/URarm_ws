@@ -17,5 +17,13 @@ To work only in virtual environment for simulation purposes, follow instructions
 > Use the "melodic-devel" branch to clone "universal_robot" package in your workspace
 >
 > Delete the ".git" and ".github" of "universal_robot" package to sync it within your repository.
+>
+You have to update the dependencies (in main repository folder):
+```shell
+rosdep update
+rosdep install --rosdistro $ROS_DISTRO --ignore-src --from-paths src
+# building
+catkin_make
+```
 
 You are now ready to work with the workspace!
