@@ -35,11 +35,18 @@ Information is:
 - https://www.youtube.com/watch?v=3C_F8vhnUPI
 - https://classic.gazebosim.org/tutorials?tut=ros_control
 
+
 ## **Control the UR5 robot with ros_control**
 We will extend the URDF description with position controllers for every joint and parametrize them with a configuration file.
 
 ### **Modifying the URDF**
-I will now describe the parts that have to be added to the URDF in oder to use it together with ros_control.
+
+To obtain the urdf file from xacro file:
+- place to the ur_description/urdf folder and open a terminal:
+```shell
+rosrun xacro xacro ur5e.xacro > ur5e_generated.urdf
+```
+I will now describe the parts that have to be changed to the URDF in oder to use it together with ros_control.
 
 First, we need to insert a ros_control plugin that parses the URDF directly after the opening <robot> tag
 ```xml
@@ -97,3 +104,27 @@ wrist_3_joint_position_controller:
   
 
 There is p,i, and d values defined for every joint controller. At the top there is also a robot_state_publisher. That one publishes the joint states and is not important for us at the moment.
+
+### **Commanding the joint positions**
+Now we can send position commands to our position controllers in order to move the robot.
+
+For bringup, type:
+```shell
+roslaunch ur5-joint-position-control ur5_gazebo_joint_position_control.launch
+```
+The position controllers listen to the topic ur5/controller_name/command/. The easiest way to send commands is to start up the rqt_gui:
+```shell
+rosrun rqt_gui rqt_gui
+```
+In the menu bar under Plugins we choose the Message Publisher from the Topics folder.
+We will go through the tuning process for the wrist_1 joint so please add the /wrist_1_joint_position_controller/command topic. 
+> Press "run" in Gazebo
+>
+> Select the topic where to publish by clicking on the box
+
+### **Tuning a PID Position Controller**
+As before with the Message Publisher, add the Plot plugin from the plugin menu to your rqt window. You can add topics that you want to visualize to the graph 
+
+For tuning, we want to look at the controller command and the system response to it. As an example, add the topics /wrist_1_joint_position_controller/state/process_value which is the (virtually) measured joint position and the /wrist_1_joint_position_controller/command/data to the plot.
+
+To change PID values, you can use Dynamic Reconfigure from the Plugins menu under the Configuration folder. 
