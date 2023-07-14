@@ -41,11 +41,6 @@ We will extend the URDF description with position controllers for every joint an
 
 ### **Modifying the URDF**
 
-To obtain the urdf file from xacro file:
-- place to the ur_description/urdf folder and open a terminal:
-```shell
-rosrun xacro xacro ur5e.xacro > ur5e_generated.urdf
-```
 I will now describe the parts that have to be changed to the URDF in oder to use it together with ros_control.
 
 First, we need to insert a ros_control plugin that parses the URDF directly after the opening <robot> tag
