@@ -90,12 +90,8 @@ In the "launch" folder create a new "ur5e_custom_bringup.launch" file with:
 ```
 You can see the topics and nodes but there is no topic to control the robot joints. For this purpose, we have to create a specific package.
 
-## **2.3. Control the Joint positions**
+## **2.5. Control the Joint positions**
 
-Create first a package:
+Bringup first the robot arm with speciffic controllers defined in "ur5e_controllers.yaml" file in "config" folder. We have used "effort_controllers/JointPositionController" for this exemple:
 ```shell
-catkin_create_pkg ur5e_control rospy controller_manager joint_state_controller robot_state_publisher
-```
-
-Load again the UR robot in Gazebo to see the topics to control.
-
+roslaunch 
