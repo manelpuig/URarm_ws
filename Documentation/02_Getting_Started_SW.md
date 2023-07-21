@@ -1,37 +1,83 @@
 # **2. Getting started in virtual environment**
 
+Important information in:
+
+- http://wiki.ros.org/universal_robots
+- https://github.com/ros-industrial/universal_robot
+- https://sir.upc.edu/projects/rostutorials/10-gazebo_control_tutorial/index.html#
+
+Also:
+- https://roboticscasual.com/ros-tutorial-simulate-ur5-robot-in-gazebo-urdf-explained/
+- https://roboticscasual.com/ros-tutorial-control-the-ur5-robot-with-ros_control-tuning-a-pid-controller/
+- https://roboticscasual.com/robotics-tutorials/
+- https://discourse.ros.org/t/new-packages-for-noetic-2022-11-30/28592
+- http://wiki.ros.org/rqt_joint_trajectory_controller
+- https://github.com/dairal/ur5-joint-position-control/tree/main
+
+First of all you need to install the controllers:
+```shell
+sudo apt-get install ros-noetic-ros-control ros-noetic-ros-controllers
+```
+You can see the installed packages:
+- ros_control
+- ros_controlers
+
+In /opt/ros/noetic/share folder
+
+## **1. Industrial Robots**
+
 To verify the correct installation follow first instructions in:
 - https://github.com/ros-industrial/universal_robot
 
-Usage with Gazebo Simulation:
+You can use the "universal_robot" package to control the ur5e robot arm
 
-There are launch files available to bringup a simulated robot.
+- Bringup your ur5e robot arm:
+```shell
+roslaunch ur_gazebo ur5e_bringup.launch
+```
+**Control joint angle values**
 
-To bring up the simulated robot in Gazebo, run:
+This can be done using rqt.
+
+The rqt tool has two interesting plugins for control purposes:
+
+- The Robot Tools/Controller Manager: To load, unload, start and stop controllers.
+
+- The Robot Tools/Joint Trajectory Controller: To move the robot joints using a Joint Trajectory Controller.
+
+Verify you have installed:
+```shell 
+sudo apt install ros-noetic-rqt-controller-manager
+sudo apt install ros-noetic-rqt-joint-trajectory-controller
+```
+You can access to each robot joint:
+![](./Images/02_getting_started_sw/1_rqt_ur5e.png)
+
+**Control position TCP**
+
+- There are launch files available to bringup a simulated robot. To bring up the simulated robot in Gazebo, run:
 ```shell
 roslaunch ur_gazebo ur5_bringup.launch
 ```
-MoveIt! with a simulated robot
-
-
-Again, you can use MoveIt! to control the simulated robot.
-
-For setting up the MoveIt! nodes to allow motion planning run:
+- MoveIt! with a simulated robot. You can use MoveIt! to control the simulated robot. For setting up the MoveIt! nodes to allow motion planning run:
 ```shell
 roslaunch ur5_moveit_config moveit_planning_execution.launch sim:=true
 ```
 
-For starting up RViz with a configuration including the MoveIt! Motion Planning plugin run:
+- For starting up RViz with a configuration including the MoveIt! Motion Planning plugin run:
 ```shell
 roslaunch ur5_moveit_config moveit_rviz.launch
 ```
-Test a "random feasible" target to verify the correct behaviour
+- Test a "random feasible" target to verify the correct behaviour
 
-Lets now control the joint positions.
 
-## **2.1. Create a control package**
+## **2. Custom robot arm**
 
-Create first a package:
+We will create a custom robot model os we can use a ready to use robot arm model in urdf format. We will use ur5_model.urdf for the firts exemple.
+
+### **2.1. Custom package**
+
+Create a custom package:
 ```shell
 catkin_create_pkg ur5e_control rospy controller_manager joint_state_controller robot_state_publisher
 ```
@@ -40,7 +86,7 @@ and inside create the folders:
 - config
 - launch
 
-## **2.2. UR robot arm model**
+### **2.2. UR robot arm model**
 
 The robot arm model is located in "ur_description"-->"urdf" folder. 
 
@@ -71,13 +117,13 @@ For any robot arm model you will identify for each link:
 ```
 We propose you a ur5 exemple model to practice
 
-## **2.3. Add the configuration file**
+### **2.3. Add the configuration file**
 Apart from modifying the URDF, we have to provide a configuration file that loads the controller parameters to the parameter server. The position controller we will use is a PID controller.
 - The controller type has to correspond to the "Hardware Interface". In our exemple the type is: effort_controllers/JointPositionController
 
 We propose you an exemple of configuration file properly designed for ur5 robot arm.
 
-## **2.4. Spawn UR robot in virtual environment Gazebo**
+### **2.4. Spawn UR robot in virtual environment Gazebo**
 In the "launch" folder create a new "ur5_custom_bringup.launch" file with:
 ```xml
 <launch>
@@ -111,11 +157,11 @@ roslaunch ur5e_control ur5_custom_bringup.launch
 
 You can see the topics to control the joint angles
 
-## **2.5. Control the Joint positions**
+### **2.5. Control the Joint positions**
 
 This can be done:
 
-**a) Using rqt
+**a) Using rqt**
 
 The rqt tool has two interesting plugins for control purposes:
 
@@ -138,34 +184,3 @@ rosrun ur5e_control ur5_joint_state.py
 **Exercise**
 Create a node to specify a 6 angle joint configuration for our ur5_model 
 
-
-## 2.6. Industrial Robots**
-
-You can use the "universal_robot" package to control the ur5e robot arm
-
-- Bringup your ur5e robot arm:
-```shell
-roslaunch ur_gazebo ur5e_bringup.launch
-```
-**Control joints**
-
-This also can be done:
-**a) Using rqt
-
-The rqt tool has two interesting plugins for control purposes:
-
-- The Robot Tools/Controller Manager: To load, unload, start and stop controllers.
-
-- The Robot Tools/Joint Trajectory Controller: To move the robot joints using a Joint Trajectory Controller.
-
-Verify you have installed:
-```shell 
-sudo apt install ros-noetic-rqt-controller-manager
-sudo apt install ros-noetic-rqt-joint-trajectory-controller
-```
-You can access to each robot joint:
-![](./Images/02_getting_started_sw/1_rqt_ur5e.png)
-
-**b) using topics**
-
-- list all the topics and choose the one to publish an angle value.
