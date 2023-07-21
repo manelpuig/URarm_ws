@@ -1,0 +1,12 @@
+<launch>
+  <arg name="sim" default="true" />
+  <arg name="limited" default="true"/>
+  <arg name="config" default="true"/>
+  <!-- Launch ur5e -->
+   <include file="$(find ur_gazebo)/launch/ur5e_bringup.launch">
+    </include>
+  <!-- Launch planning execution -->
+  <include file="$(find ur5_moveit_config)/launch/moveit_planning_execution.launch">
+    <arg name="sim" default="$(arg sim)"/>
+  </include>
+</launch>

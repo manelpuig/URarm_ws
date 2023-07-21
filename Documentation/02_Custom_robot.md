@@ -1,4 +1,4 @@
-# **2. Getting started in virtual environment**
+# **2. Custom robot: Getting started in virtual environment**
 
 Important information in:
 
@@ -79,7 +79,7 @@ We will create a custom robot model os we can use a ready to use robot arm model
 
 Create a custom package:
 ```shell
-catkin_create_pkg ur5e_control rospy controller_manager joint_state_controller robot_state_publisher
+catkin_create_pkg custom_robot_control rospy controller_manager joint_state_controller robot_state_publisher
 ```
 and inside create the folders:
 - urdf
@@ -152,7 +152,7 @@ In the "launch" folder create a new "ur5_custom_bringup.launch" file with:
 ```
 Type:
 ```shell
-roslaunch ur5e_control ur5_custom_bringup.launch
+roslaunch custom_robot_control custom_ur5_bringup.launch
 ```
 
 You can see the topics to control the joint angles
@@ -178,7 +178,7 @@ rostopic pub -1 /shoulder_lift_joint_position_controller/command std_msgs/Float6
 ```
 - You can create a node to publish an angle value to each joint. This is performed in a python file "ur5_joint_state.py"
 ```shell
-rosrun ur5e_control ur5_joint_state.py
+rosrun custom_robot_control custom_ur5_joint_state.py
 ```
 
 **Exercise**
