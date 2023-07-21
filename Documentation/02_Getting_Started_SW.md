@@ -42,39 +42,55 @@ and inside create the folders:
 
 ## **2.2. UR robot arm model**
 
-The robot arm model is located in "ur_description"-->"urdf" folder. Go to this folder and you will see all the models in xacro format.
+The robot arm model is located in "ur_description"-->"urdf" folder. 
 
-- The first action is to translate the model in urdf format. Type:
+If you have a model in xacro format, go to this folder and make the conversion to urdf format.
+
 ```shell
 rosrun xacro xacro ur5e.xacro > ur5e_generated.urdf
 ```
-
-- You need to add this speciffic "gazebo_ros_control" plugin.
-```shell
-<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-</plugin>
+For any robot arm model you will identify for each link:
+- The <transmission> element has to be defined to link actuators to joints. 
+```xml
+  <transmission name="shoulder_pan_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="shoulder_pan_joint">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="shoulder_pan_motor">
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
 ```
-Place this new model to the urdf folder created in the new package.
+- A Gazebo plugin needs to be added to the URDF to actually parse the transmission tags and load the appropriate hardware interfaces and controller manager.
+```xml
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    </plugin>
+  </gazebo>
+```
+We propose you a ur5 exemple model to practice
 
 ## **2.3. Add the configuration file**
 Apart from modifying the URDF, we have to provide a configuration file that loads the controller parameters to the parameter server. The position controller we will use is a PID controller.
+- The controller type has to correspond to the "Hardware Interface". In our exemple the type is: effort_controllers/JointPositionController
 
-Copy the "ur5e_controllers.yaml" file from "ur_gazebo">""config" folder to your new created "config" folder in the new package.
+We propose you an exemple of configuration file properly designed for ur5 robot arm.
 
 ## **2.4. Spawn UR robot in virtual environment Gazebo**
-In the "launch" folder create a new "ur5e_custom_bringup.launch" file with:
+In the "launch" folder create a new "ur5_custom_bringup.launch" file with:
 ```xml
 <launch>
   <include file="$(find gazebo_ros)/launch/empty_world.launch" >
     <arg name="paused" value="true" />
   </include>
 
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-file $(find ur5e_control)/urdf/ur5e_generated.urdf -urdf -x 0 -y 0 -z 0.1 -model ur5 -J shoulder_lift_joint -0.5 -J elbow_joint 0.5" />
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-file $(find ur5e_control)/urdf/ur5_model.urdf -urdf -x 0 -y 0 -z 0.1 -model ur5 -J shoulder_lift_joint -0.5 -J elbow_joint 0.5" />
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find ur5e_control)/config/ur5e_controllers.yaml" command="load"/>
+  <rosparam file="$(find ur5e_control)/config/ur5_controllers.yaml" command="load"/>
 
-  <param name="robot_description" textfile="$(find ur5e_control)/urdf/ur5e_generated.urdf"/>
+  <param name="robot_description" textfile="$(find ur5e_control)/urdf/ur5_model_.urdf"/>
   
   <!-- load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
@@ -88,10 +104,68 @@ In the "launch" folder create a new "ur5e_custom_bringup.launch" file with:
 
 </launch>
 ```
-You can see the topics and nodes but there is no topic to control the robot joints. For this purpose, we have to create a specific package.
+Type:
+```shell
+roslaunch ur5e_control ur5_custom_bringup.launch
+```
+
+You can see the topics to control the joint angles
 
 ## **2.5. Control the Joint positions**
 
-Bringup first the robot arm with speciffic controllers defined in "ur5e_controllers.yaml" file in "config" folder. We have used "effort_controllers/JointPositionController" for this exemple:
+This can be done:
+
+**a) Using rqt
+
+The rqt tool has two interesting plugins for control purposes:
+
+- Topics message publisher
+
+
+**b) using topics**
+
+- Bringup first the robot arm with speciffic controllers defined in "ur5_controllers.yaml" file in "config" folder. 
+
+- list all the topics and choose the one to publish an angle value. For exemple "/shoulder_lift_joint_position_controller/command"
 ```shell
-roslaunch 
+rostopic pub -1 /shoulder_lift_joint_position_controller/command std_msgs/Float64 "data: -1.507"
+```
+- You can create a node to publish an angle value to each joint. This is performed in a python file "ur5_joint_state.py"
+```shell
+rosrun ur5e_control ur5_joint_state.py
+```
+
+**Exercise**
+Create a node to specify a 6 angle joint configuration for our ur5_model 
+
+
+## 2.6. Industrial Robots**
+
+You can use the "universal_robot" package to control the ur5e robot arm
+
+- Bringup your ur5e robot arm:
+```shell
+roslaunch ur_gazebo ur5e_bringup.launch
+```
+**Control joints**
+
+This also can be done:
+**a) Using rqt
+
+The rqt tool has two interesting plugins for control purposes:
+
+- The Robot Tools/Controller Manager: To load, unload, start and stop controllers.
+
+- The Robot Tools/Joint Trajectory Controller: To move the robot joints using a Joint Trajectory Controller.
+
+Verify you have installed:
+```shell 
+sudo apt install ros-noetic-rqt-controller-manager
+sudo apt install ros-noetic-rqt-joint-trajectory-controller
+```
+You can access to each robot joint:
+![](./Images/02_getting_started_sw/1_rqt_ur5e.png)
+
+**b) using topics**
+
+- list all the topics and choose the one to publish an angle value.

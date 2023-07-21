@@ -59,8 +59,6 @@
           package. Users CANNOT rely on this file being available, or stored in
           this location. Nor can they rely on the existence of the macro.
   -->
-  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-  </plugin>
   <transmission name="shoulder_pan_trans">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="shoulder_pan_joint">
