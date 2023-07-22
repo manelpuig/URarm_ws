@@ -9,22 +9,29 @@ Important information in:
 
 We can create a specific package for kinematics control.
 
-Create the ur5control package with dependencies:
-
-moveit_core
-moveit_visual_tools
-moveit_ros_planning_interface
-interactive_markers
-std_msgs
-geometry_msgs
+- Create the "industrial_ur_control" package with dependencies:
+  - moveit_core
+  - moveit_ros_planning_interface
+  - std_msgs
+  - geometry_msgs
+  - rospy
 
 ```shell
 catkin_create_pkg industrial_ur_control rospy moveit_core moveit_ros_planning_interface std_msgs geometry_msgs
 ```
+- Create "launch" and "src" folders
+- Create "industrial_ur5e_bringup.launch" file in "launch" folder
+- Create "ur5e_joints_control.py" file in "src" folder
+- Create "ur5e_joints_control.launch" file in "launch" folder
 
      
 
-## **Forward Kinematics**
+## **POSE control**
+- Create "ur5e_pose_control.py" file in "src" folder
+- Create "ur5e_pose_control.launch" file in "launch" folder
+
+
+
 Type:
 ```shell
 roslaunch ur_gazebo ur5e_bringup.launch
