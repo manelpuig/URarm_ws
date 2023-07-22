@@ -6,6 +6,10 @@ Important information in:
 - https://github.com/ros-industrial/universal_robot
 - https://sir.upc.edu/projects/rostutorials/10-gazebo_control_tutorial/index.html#
 
+Important information in:
+
+- https://www.udemy.com/course/robotics-with-ros-build-robotic-arm-in-gazebo-and-moveit/learn/lecture/28756138#overview
+
 Also:
 - https://roboticscasual.com/ros-tutorial-simulate-ur5-robot-in-gazebo-urdf-explained/
 - https://roboticscasual.com/ros-tutorial-control-the-ur5-robot-with-ros_control-tuning-a-pid-controller/
@@ -24,56 +28,7 @@ You can see the installed packages:
 
 In /opt/ros/noetic/share folder
 
-## **1. Industrial Robots**
-
-To verify the correct installation follow first instructions in:
-- https://github.com/ros-industrial/universal_robot
-
-You can use the "universal_robot" package to control the ur5e robot arm
-
-- Bringup your ur5e robot arm:
-```shell
-roslaunch ur_gazebo ur5e_bringup.launch
-```
-**Control joint angle values**
-
-This can be done using rqt.
-
-The rqt tool has two interesting plugins for control purposes:
-
-- The Robot Tools/Controller Manager: To load, unload, start and stop controllers.
-
-- The Robot Tools/Joint Trajectory Controller: To move the robot joints using a Joint Trajectory Controller.
-
-Verify you have installed:
-```shell 
-sudo apt install ros-noetic-rqt-controller-manager
-sudo apt install ros-noetic-rqt-joint-trajectory-controller
-```
-You can access to each robot joint:
-![](./Images/02_getting_started_sw/1_rqt_ur5e.png)
-
-**Control position TCP**
-
-- There are launch files available to bringup a simulated robot. To bring up the simulated robot in Gazebo, run:
-```shell
-roslaunch ur_gazebo ur5_bringup.launch
-```
-- MoveIt! with a simulated robot. You can use MoveIt! to control the simulated robot. For setting up the MoveIt! nodes to allow motion planning run:
-```shell
-roslaunch ur5_moveit_config moveit_planning_execution.launch sim:=true
-```
-
-- For starting up RViz with a configuration including the MoveIt! Motion Planning plugin run:
-```shell
-roslaunch ur5_moveit_config moveit_rviz.launch
-```
-- Test a "random feasible" target to verify the correct behaviour
-
-
-## **2. Custom robot arm**
-
-We will create a custom robot model os we can use a ready to use robot arm model in urdf format. We will use ur5_model.urdf for the firts exemple.
+We will create a custom robot model or we can use a ready to use robot arm model in urdf format. We will use ur5_model.urdf for the firts exemple.
 
 ### **2.1. Custom package**
 
