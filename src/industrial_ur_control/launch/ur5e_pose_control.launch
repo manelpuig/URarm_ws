@@ -1,6 +1,6 @@
 <launch>
 
-  <node name="ur5e_node" pkg="industrial_ur_control" type="ur5e_pose_control.py" output="screen">
+  <node name="ur5e_pose_control" pkg="industrial_ur_control" type="ur5e_pose_control.py" output="screen">
   </node>
 
 </launch>

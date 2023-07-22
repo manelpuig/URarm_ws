@@ -10,20 +10,18 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 
 moveit_commander.roscpp_initialize(sys.argv)
-rospy.init_node('move_group_python_interface_tutorial', anonymous=True)
+rospy.init_node('ur5e_pose_control', anonymous=True)
 
-robot = moveit_commander.RobotCommander()
-scene = moveit_commander.PlanningSceneInterface()    
+robot = moveit_commander.RobotCommander() 
 group = moveit_commander.MoveGroupCommander("manipulator")
-display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path', moveit_msgs.msg.DisplayTrajectory, queue_size=1)
 
 pose_target = geometry_msgs.msg.Pose()
-pose_target.position.x = -0.4
+pose_target.position.x = 0.4
 pose_target.position.y = 0.6
-pose_target.position.z = 0.3
-r=math.radians(0)
+pose_target.position.z = 0.7
+r=math.radians(-120)
 p=math.radians(0)
-w=math.radians(0)
+w=math.radians(-45)
 quat1=quaternion_from_euler(r,p,w)
 
 pose_target.orientation.x = quat1[0]

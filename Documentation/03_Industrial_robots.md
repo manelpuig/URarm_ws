@@ -1,8 +1,13 @@
-# **Industrial Robots: Getting started for 
+# **Industrial Robots: Getting started** 
 
 You have the official "universal robot" package already installed in "src" folder. To verify the correct installation follow first instructions in:
 - https://github.com/ros-industrial/universal_robot
 
+You need to install moveit package:
+```shell
+sudo apt install ros-noetic-moveit
+```
+Instructions for moveit are: https://ros-planning.github.io/moveit_tutorials/
 
 ## **3.1. Getting started**
 

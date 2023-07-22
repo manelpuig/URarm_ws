@@ -10,29 +10,27 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 
 moveit_commander.roscpp_initialize(sys.argv)
-rospy.init_node('move_group_python_interface_tutorial', anonymous=True)
+rospy.init_node('ur5e_joints_control', anonymous=True)
 
 robot = moveit_commander.RobotCommander()
-scene = moveit_commander.PlanningSceneInterface()    
 group = moveit_commander.MoveGroupCommander("manipulator")
-display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path', moveit_msgs.msg.DisplayTrajectory, queue_size=1)
 
 group_variable_values = group.get_current_joint_values()
 
-group_variable_values[0] = math.radians(0)
-group_variable_values[1] = math.radians(-90)
-group_variable_values[2] = math.radians(0)
-group_variable_values[3] = math.radians(0)
-group_variable_values[4] = math.radians(0)
+group_variable_values[0] = math.radians(45)
+group_variable_values[1] = math.radians(-60)
+group_variable_values[2] = math.radians(30)
+group_variable_values[3] = math.radians(-90)
+group_variable_values[4] = math.radians(-90)
 group_variable_values[5] = math.radians(0)
 
 group.set_joint_value_target(group_variable_values)
 
-plan2 = group.plan()
+plan1 = group.plan()
 
-rospy.sleep(5)
+rospy.sleep(1)
 group.go(wait=True)
-rospy.sleep(5)
+rospy.sleep(1)
 
 print ("Current Joint Values:")
 joint_target2=group.get_current_joint_values()
