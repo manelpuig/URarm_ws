@@ -1,27 +1,32 @@
-# **UR5e control real robot**
+# **4. UR5e control real robot**
 Detailed information will be found in readme file on:
 
 Tutorial
+- https://gitioc.upc.edu/labs/fmauch_universal_robot/-/tree/esaii/
+- https://github.com/nLinkAS/fmauch_universal_robot/tree/kinetic-devel
 
-http://docs.ros.org/en/melodic/api/moveit_tutorials/html/index.html
+Forum:
+- https://forum.universal-robots.com/t/ros-driver-dependency-on-external-repo/6897
 
 Videos
+- https://www.youtube.com/watch?v=b4T577d39dE
+- https://www.youtube.com/watch?v=BxCik8OI1Fw
 
-https://www.youtube.com/watch?v=b4T577d39dE
+## **4.1. Setup**
 
-https://www.youtube.com/watch?v=BxCik8OI1Fw
 
-1. Control Package
-We will use the same package ur5control developed for simulation kinematics control.
-
-we will use the same python files developed for simulation
+We will use the same package "industrial_ur_control" developed for simulation of industrial UR robot arms.
 
 The main diferences are:
 
-First we open the driver with the callibration file:
-roslaunch ur_robot_driver ur5e_bringup.launch robot_ip:=192.168.1.2 kinematics_config:="${HOME}/manel_ROS/ur5arm_ws/my_robot_calibration.yaml"
+- First we open the driver with the callibration file:
+```shell
+roslaunch ur_robot_driver ur5e_bringup.launch robot_ip:=192.168.1.2 kinematics_config:="${HOME}/URarm_ws/my_robot_calibration.yaml"
+```
+>Verify the robot arm IP
 
-We have to change the controllers in "controllers.yaml" file in "/home/mpuig/ur5arm_ws/src/fmauch_universal_robot/ur5_e_moveit_config/config/controllers.yaml"
+- We have to change the controllers in "controllers.yaml" file in "/home/ubuntu/UR_arm_ws/src/fmauch_universal_robot/ur5_e_moveit_config/config/controllers.yaml"
+
 The action_ns has to be changed from: follow_joint_trajectory to: scaled_pos_joint_traj_controller/follow_joint_trajectory
 
 controller_list:
