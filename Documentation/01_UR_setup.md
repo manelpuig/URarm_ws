@@ -4,6 +4,9 @@ You can use:
 - Virtual Box with speciffic virtual machine
 - Docker image
 
+Webgraphy:
+- https://roboticscasual.com/robotics-tutorials/
+
 ### **1. To work also with a real UR robot arm**
 Follow installation instructions in: 
 - https://github.com/UniversalRobots/Universal_Robots_ROS_Driver
